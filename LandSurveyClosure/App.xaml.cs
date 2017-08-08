@@ -1,4 +1,5 @@
 ﻿using Xamarin.Forms;
+using LandSurveyClosure.Views;
 
 namespace LandSurveyClosure
 {
@@ -8,7 +9,7 @@ namespace LandSurveyClosure
         {
             InitializeComponent();
 
-            MainPage = new LandSurveyClosurePage();
+            MainPage = new MenuPage();
         }
 
         protected override void OnStart()

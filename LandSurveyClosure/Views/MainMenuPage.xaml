@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:JayCadSurveyXamarin.MarkupExtensions"
+    x:Class="JayCadSurveyXamarin.MenuPages.MainMenuPage"
+    BackgroundColor="{StaticResource mainColorBackground}"
+    NavigationPage.HasNavigationBar="false">
+	<ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+            iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+    <RelativeLayout>
+       <BoxView BackgroundColor="{StaticResource bannerBackground}" x:Name="banner"
+            RelativeLayout.HeightConstraint="{ConstraintExpression 
+                Type=RelativeToParent,
+                Property=Height,
+                Factor=0.1}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression
+                Type=RelativeToParent,
+                Property=Width,
+                Factor=1}" />
+       <Image Source="{local:EmbeddedImage LandSurveyClosure.Images.close_it.png}"
+            x:Name="bannerImageLogo"
+            RelativeLayout.HeightConstraint="{ConstraintExpression 
+                Type=RelativeToParent,
+                Property=Height,
+                Factor=0.1}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression
+                Type=RelativeToParent,
+                Property=Width,
+                Factor=1}" />
+       <StackLayout Padding="30, 0, 30, 0" Spacing="30"
+            RelativeLayout.WidthConstraint="{ConstraintExpression
+                Type=RelativeToParent,
+                Property=Width,
+                Factor=1}"
+                
+            RelativeLayout.YConstraint="{ConstraintExpression
+                Type=RelativeToView,
+                ElementName=banner,
+                Property=Height,
+                Factor=1,
+                Constant=20}">
+            <Label
+                Text="Main Menu"
+                Style="{StaticResource pageLabel}" />
+            <Button
+                Text="Conversions"
+                Style="{StaticResource menuButton}"
+                Command="{Binding GoToConversionsMenuPageCommand}" />
+            <Button
+                Text="Angle Add/Subtract"
+                Style="{StaticResource menuButton}" 
+                Command="{Binding GoToAngleAddSubtractPageCommand}" />
+            <Button
+                Text="Settings"
+                Style="{StaticResource menuButton}"
+                Command="{Binding GoToSettingsPageCommand}" />
+            <Button
+                Text="About"
+                Style="{StaticResource menuButton}"
+                Command="{Binding GoToAboutPageCommand}" />
+        </StackLayout>
+    </RelativeLayout>
+</ContentPage>

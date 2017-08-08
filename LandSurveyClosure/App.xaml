@@ -1,6 +1,84 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="LandSurveyClosure.App">
 	<Application.Resources>
-		<!-- Application resource dictionary -->
-	</Application.Resources>
+        <!-- Application resource dictionary -->
+        <ResourceDictionary>
+            
+            <Color x:Key="mainColorBackground">#283460</Color>
+            <Color x:Key="bannerBackground">#3E2A98</Color>
+
+            <!-- Navigation Button Background Colors -->
+            <OnPlatform x:Key="NavigationButtonBackgroundColor" x:TypeArguments="x:String">
+                <On Platform="iOS">#283460</On>
+                <On Platform="Android">#991f00</On>
+            </OnPlatform>
+            
+            <Style x:Key="menuButton" TargetType="Button">
+                <Setter Property="BorderRadius" Value="15" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="TextColor" Value="#FBC70C" />
+                <Setter Property="BorderColor" Value="#fff" />
+                <Setter Property="BorderWidth" Value="2" />
+                <Setter Property="BackgroundColor" Value="{StaticResource NavigationButtonBackgroundColor}" />
+            </Style>
+            
+            <Style x:Key="pageLabel" TargetType="Label" >
+                <Setter Property="TextColor" Value="#fff" />
+                <Setter Property="FontSize" Value="25" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+            </Style>
+            
+            <Style x:Key="pageButton" TargetType="Button" >
+                <Setter Property="BackgroundColor" Value="#F8CE18" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="TextColor" Value="#283460" />
+                <Setter Property="FontSize" Value="15" />
+            </Style>
+
+             <Style x:Key="pageDisplayLabel" TargetType="Label" >
+                <Setter Property="BackgroundColor" Value="#B7B5CF" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+            </Style>
+
+            <Style x:Key="userInputEntry" TargetType="Entry" >
+                <Setter Property="BackgroundColor" Value="#fff" />
+            </Style>
+
+            <Style x:Key="stackListLabel" TargetType="Label" >
+                <Setter Property="BackgroundColor" Value="#fff" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="FontSize" Value="15" />
+            </Style>
+
+            <Style x:Key="pickerUnits" TargetType="Picker" >
+                <Setter Property="BackgroundColor" Value="#ffff99" />
+            </Style>  
+
+            <Style x:Key="aboutTextLabel" TargetType="Label" >
+                <Setter Property="BackgroundColor" Value="{StaticResource mainColorBackground}" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="TextColor" Value="#fff" />
+                <Setter Property="FontSize" Value="15" />
+                <Setter Property="LineBreakMode" Value="WordWrap" />
+            </Style>
+
+            <Style x:Key="aboutTextHeading" TargetType="Label" >
+                <Setter Property="BackgroundColor" Value="{StaticResource mainColorBackground}" />
+                <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="TextColor" Value="#ffffcc" />
+                <Setter Property="FontSize" Value="20" />
+                <Setter Property="FontAttributes" Value="Italic" />
+            </Style>
+           
+        </ResourceDictionary>
+    </Application.Resources>
+        
 </Application>
