@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="LandSurveyClosure.Views.ClosureEntryPage"
+	BackgroundColor="{StaticResource mainColorBackground}"
+    NavigationPage.HasNavigationBar="false"
+    NavigationPage.HasBackButton="false" >
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+            iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+    <StackLayout Spacing="15" Margin="10, 10, 10, 10">
+        <!--   Page Heading   -->
+        <Label
+            Text="Conversions Stack"
+            Style="{StaticResource pageLabel}" />
+        <ListView x:Name="stackList"
+                BackgroundColor="#fff">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                  <TextCell
+                        Text="{Binding ConversionDisplayValue}"
+                        TextColor="Black">
+                        <TextCell.ContextActions>
+                            <MenuItem
+                                Text="Delete"
+                                Clicked="Delete_Clicked"
+                                IsDestructive="true"
+                                CommandParameter="{Binding .}"/>
+                        </TextCell.ContextActions>
+                    </TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+       
+        <Label
+            Text="Running Totals"
+            HorizontalOptions="Center"
+            TextColor="#fff"
+            VerticalTextAlignment="End"/>
+        <StackLayout Orientation="Horizontal" Spacing="15">
+           <Label
+                x:Name="convertFromTotal"
+                Text="0"
+                Style="{StaticResource pageDisplayLabel}"
+                FontSize="20" />  
+           <Label
+                x:Name="convertToTotal"
+                Text="0"
+                Style="{StaticResource pageDisplayLabel}"
+                FontSize="20" /> 
+        </StackLayout>
+       
+        <!-- <Button
+           Text="Back"
+            Style="{StaticResource menuButton}"
+            Clicked="Handle_Clicked" />-->
+    </StackLayout>    
+</ContentPage>

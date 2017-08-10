@@ -5,13 +5,13 @@ using Xamarin.Forms;
 
 namespace LandSurveyClosure.Views
 {
-    public partial class MenuPage : ContentPage
+    public partial class ClosureEntryPage : ContentPage
     {
-        public MenuPage()
+        public ClosureEntryPage()
         {
             InitializeComponent();
 
-            BindingContext = new MenuPageViewModel(new PageService());
+            BindingContext = new CLosureEntryViewModel(new PageService());
         }
     }
 }

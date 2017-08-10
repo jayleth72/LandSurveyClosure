@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:LandSurveyClosure.MarkupExtensions"
+    x:Class="LandSurveyClosure.AboutPage"
+	BackgroundColor="{StaticResource mainColorBackground}"
+    NavigationPage.HasNavigationBar="false"
+    NavigationPage.HasBackButton="false" >
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness"
+            iOS="0, 20, 0, 0"/>
+    </ContentPage.Padding>
+    <ScrollView>
+        <StackLayout
+            Padding="30, 0, 30, 30"
+            Spacing="30"
+            VerticalOptions="FillAndExpand">
+                <Label 
+                    Text="About JayCad"
+                    Style="{StaticResource pageLabel}" />
+                <Label
+                    Text="{Binding AboutText}" 
+                    Style="{StaticResource aboutTextLabel}" />
+                
+                <StackLayout Spacing="10">
+                     <Label
+                        Text="{Binding LengthConversion}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding LengthConversionText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                     <Label
+                        Text="{Binding AreaConversion}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding AreaConversionText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                     <Label
+                        Text="{Binding DecimalAngleConversion}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding DecimalAngleConversionText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                     <Label
+                        Text="{Binding DegMinSecondsConversion}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding DegMinSecondsConversionText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                     <Label
+                        Text="{Binding AngleAddSubtract}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding AngleAddSubtractText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                    <Label
+                        Text="{Binding SettingsConversionRounding}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding SettingsText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+                </StackLayout>
+
+                <StackLayout Spacing="10">
+                    <Label
+                        Text="{Binding LegalTextHeading}" 
+                        Style="{StaticResource aboutTextHeading}" />
+                    <Label
+                        Text="{Binding LegalText}" 
+                        Style="{StaticResource aboutTextLabel}" />
+
+                </StackLayout>
+
+                <Label
+                        Text="{Binding Copyright}" 
+                        Style="{StaticResource aboutTextLabel}"
+                        HorizontalTextAlignment="Center"/>
+
+                <Button
+                    Text="Main Menu"
+                    Style="{StaticResource menuButton}"
+                    Command="{Binding BackToPreviousPageCommand}"
+                    WidthRequest="150" />
+                
+           </StackLayout>
+       
+    </ScrollView>
+   
+</ContentPage>

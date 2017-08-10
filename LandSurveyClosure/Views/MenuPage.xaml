@@ -45,17 +45,10 @@
                 Text="Main Menu"
                 Style="{StaticResource pageLabel}" />
             <Button
-                Text="Conversions"
+                Text="Closure Calculation"
                 Style="{StaticResource menuButton}"
-                Command="{Binding GoToConversionsMenuPageCommand}" />
-            <Button
-                Text="Angle Add/Subtract"
-                Style="{StaticResource menuButton}" 
-                Command="{Binding GoToAngleAddSubtractPageCommand}" />
-            <Button
-                Text="Settings"
-                Style="{StaticResource menuButton}"
-                Command="{Binding GoToSettingsPageCommand}" />
+                Command="{Binding GoToClosureEntryPageCommand}" />
+           
             <Button
                 Text="About"
                 Style="{StaticResource menuButton}"

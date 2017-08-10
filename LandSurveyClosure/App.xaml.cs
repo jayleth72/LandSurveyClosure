@@ -9,7 +9,7 @@ namespace LandSurveyClosure
         {
             InitializeComponent();
 
-            MainPage = new MenuPage();
+            MainPage = new NavigationPage(new MenuPage());
         }
 
         protected override void OnStart()
