@@ -6,8 +6,12 @@ namespace LandSurveyClosure.ViewModel
 {
     public class CLosureEntryViewModel : BaseViewModel
     {
+		// View Button commands
+		public ICommand GoToMainMenuCommand { get; private set; }
+
         public CLosureEntryViewModel(IPageService pageService) : base(pageService)
         {
-        }
+           
+		}
     }
 }

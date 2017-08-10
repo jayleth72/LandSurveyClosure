@@ -9,10 +9,10 @@
         <OnPlatform x:TypeArguments="Thickness"
             iOS="0, 20, 0, 0"/>
     </ContentPage.Padding>
-    <StackLayout Spacing="15" Margin="10, 10, 10, 10">
+    <StackLayout Spacing="15" Margin="15, 10, 15, 10">
         <!--   Page Heading   -->
         <Label
-            Text="Conversions Stack"
+            Text="Closure Entry"
             Style="{StaticResource pageLabel}" />
         <ListView x:Name="stackList"
                 BackgroundColor="#fff">
@@ -51,9 +51,10 @@
                 FontSize="20" /> 
         </StackLayout>
        
-        <!-- <Button
-           Text="Back"
-            Style="{StaticResource menuButton}"
-            Clicked="Handle_Clicked" />-->
+         <Button
+                Text="Main Menu"
+                Style="{StaticResource menuButton}"
+                Command="{Binding BackToPreviousPageCommand}"
+                WidthRequest="150" />
     </StackLayout>    
 </ContentPage>
