@@ -61,6 +61,11 @@
       <DependentUpon>AboutPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AboutPageViewModel.cs" />
+    <Compile Include="Behaviors\MaxNumberFieldValidationBehavior.cs" />
+    <Compile Include="Behaviors\MinNumberFieldValidationBehavior.cs" />
+    <Compile Include="Behaviors\NumberDoubleValidationBehavior.cs" />
+    <Compile Include="Behaviors\NumberIntegerValidationBehavior.cs" />
+    <Compile Include="Behaviors\TextFieldLengthRestrictorBehavior.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -75,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Views\AboutPage1.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
