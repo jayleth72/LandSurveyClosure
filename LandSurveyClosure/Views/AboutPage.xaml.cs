@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using LandSurveyClosure.ViewModel;
 using Xamarin.Forms;
 
 namespace LandSurveyClosure.Views
@@ -10,6 +10,8 @@ namespace LandSurveyClosure.Views
         public AboutPage()
         {
             InitializeComponent();
+
+            BindingContext = new AboutPageViewModel(new PageService());
         }
     }
 }

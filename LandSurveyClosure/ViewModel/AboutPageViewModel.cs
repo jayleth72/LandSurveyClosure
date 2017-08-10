@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace JayCadSurveyXamarin.ViewModel
+namespace LandSurveyClosure.ViewModel
 {
 	public class AboutPageViewModel : BaseViewModel
 	{
