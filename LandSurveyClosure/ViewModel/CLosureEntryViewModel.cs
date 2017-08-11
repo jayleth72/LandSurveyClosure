@@ -6,16 +6,16 @@ namespace LandSurveyClosure.ViewModel
 {
     public class CLosureEntryViewModel : BaseViewModel
     {
-    #region Private Variables        
+        #region Private Variables        
         private int _selectedUnitIndex;     // Selected Index for the Unit Picker, default will be metres
         private int _degreesInput;
         private int _minuteInput;
         private int _secondInput;
         private double _distanceInput;
-    #endregion
+        #endregion
 
 
-    #region Bound Properties
+        #region Bound Properties
         /// Gets or sets the index of the unit picker.
         /// </summary>
         /// <value>The index of the unit picker.</value>
@@ -48,19 +48,29 @@ namespace LandSurveyClosure.ViewModel
             get { return _secondInput; }
             set { SetValue(ref _secondInput, value); }
         }
-    #endregion
+        #endregion
 
 
-    #region View Commands for Buttons
-        public ICommand GoToMainMenuCommand { get; private set; }
-    #endregion
+        #region View Commands for Buttons
+        public ICommand AddDistanceBearingCommand { get; private set; }
+        #endregion
 
 
-    #region Constructors
+        #region Constructors
         public CLosureEntryViewModel(IPageService pageService) : base(pageService)
         {
+            AddDistanceBearingCommand = new Command(AddDistanceBearingToStack);
             _selectedUnitIndex = 0;     // Set default unit to metres
         }
-    #endregion
+        #endregion
+
+        #region Class Methods
+        private async void AddDistanceBearingToStack()
+        {
+			await _pageService.DisplayAlert("Adding Data", "Adding data.  Please choose a conversion", "ok");
+        }
+        #endregion
     }
+     
+
 }
