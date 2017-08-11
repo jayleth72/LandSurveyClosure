@@ -65,9 +65,12 @@ namespace LandSurveyClosure.ViewModel
         #endregion
 
         #region Class Methods
-        private async void AddDistanceBearingToStack()
+        /// <summary>
+        /// Adds the distance bearing to stack for display in the list.
+        /// </summary>
+        private void AddDistanceBearingToStack()
         {
-			await _pageService.DisplayAlert("Adding Data", "Adding data.  Please choose a conversion", "ok");
+			// Add Closure Lines to list
         }
         #endregion
     }

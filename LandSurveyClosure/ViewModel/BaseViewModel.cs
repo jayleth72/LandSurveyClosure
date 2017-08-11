@@ -12,6 +12,7 @@ namespace LandSurveyClosure.ViewModel
 
     public class BaseViewModel : INotifyPropertyChanged
     {
+        #region Protected Variables
         protected readonly IPageService _pageService;                           // This is here to enable Page Navigation and DispalyAlert.
         protected int _conversionRounding;                                      // Rounding for conversion results stored in SQLite db.  This is changed via a picker via Settings/Roundings2Page.  
                                                                                 //protected SQLiteAsyncConnection _connection;
@@ -33,13 +34,14 @@ namespace LandSurveyClosure.ViewModel
             MINUTES,
             SECONDS
         }
+        #endregion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        // View Buttons
+        #region Command Buttonds
         public ICommand BackToPreviousPageCommand { get; private set; }     // Enable Back navigation on pages
         public ICommand BackToMainMenuCommand { get; private set; }         // Enable Main menu navigation on pages
-
+        #endregion
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -56,7 +58,7 @@ namespace LandSurveyClosure.ViewModel
             OnPropertyChanged(propertyName);
         }
 
-
+        #region Constructor
         public BaseViewModel(IPageService pageService)
         {
             BackToPreviousPageCommand = new Command(async () => await BackToPreviousPage());    // Navigation Back Buttom
@@ -66,7 +68,9 @@ namespace LandSurveyClosure.ViewModel
 
             //_connection = DependencyService.Get<ISQLiteDb>().GetConnection();
         }
+        #endregion
 
+        #region Navigation Methods
         protected virtual async Task BackToPreviousPage()
         {
             await _pageService.PopAsync();
@@ -76,7 +80,9 @@ namespace LandSurveyClosure.ViewModel
         {
             await _pageService.PopToRootAsync();
         }
+        #endregion
 
+        #region Data Validation Methods
         /// <summary>
         /// Check for null input entry.
         /// </summary>
@@ -170,5 +176,6 @@ namespace LandSurveyClosure.ViewModel
 
             return inputFlag;
         }
+        #endregion
     }
 }
