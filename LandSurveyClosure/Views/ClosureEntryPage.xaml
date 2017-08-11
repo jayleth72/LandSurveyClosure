@@ -15,22 +15,35 @@
         <Label
             Text="Closure Entry"
             Style="{StaticResource pageLabel}" />
+
         
-        <Grid RowSpacing="15" Padding="20,0,20,20">
+        <Grid RowSpacing="10" Padding="20,0,20,20">
              <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO" />
+                <RowDefinition Height="AUTO" />
                 <RowDefinition Height="AUTO" />
                 <RowDefinition Height="AUTO" />
              </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions >
+                
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-                
+
+             <Label
+                Grid.Row="0"
+                Grid.Column="0"
+                TextColor="#fff"
+                HorizontalTextAlignment="Start"
+                VerticalTextAlignment="End"
+                FontSize="14"
+                Text="distance"/>
+            
              <Entry
-                Grid.Row = "0"
+                Grid.Row = "1"
                 Grid.Column = "0"
                 Grid.ColumnSpan="3"
                 Placeholder="distance"
@@ -45,7 +58,7 @@
 
             <Picker
                 Grid.Column="3"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.ColumnSpan="1"
                 Title="Units"
                 SelectedIndex="{Binding DistanceUnitsSelectedIndex, Mode=TwoWay}"
@@ -56,9 +69,34 @@
                     <x:String>feet</x:String> 
                 </Picker.Items>
              </Picker>  
+
+              <Label
+                Grid.Row="2"
+                Grid.Column="0"
+                TextColor="#fff"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="End"
+                FontSize="14"
+                Text="degrees"/>
+             <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                TextColor="#fff"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="End"
+                FontSize="14"
+                Text="minutes"/>  
+             <Label
+                Grid.Row="2"
+                Grid.Column="2"
+                TextColor="#fff"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="End"
+                FontSize="14"
+                Text="seconds"/>
             
              <Entry
-                Grid.Row = "1"
+                Grid.Row = "3"
                 Grid.Column = "0"
                 Placeholder="deg"
                 Text="{Binding DegreesInput, Mode=TwoWay}"
@@ -70,9 +108,9 @@
                     <behaviors:NumberIntegerValidationBehavior />
                 </Entry.Behaviors>
             </Entry> 
-
+       
             <Entry
-                Grid.Row = "1"
+                Grid.Row = "3"
                 Grid.Column = "1"
                 Placeholder="min"
                 Text="{Binding MinutesInput, Mode=TwoWay}"
@@ -86,7 +124,7 @@
             </Entry> 
 
              <Entry
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="2"
                 Placeholder="sec"
                 Text="{Binding SecondsInput, Mode=TwoWay}"
@@ -100,7 +138,7 @@
             </Entry> 
 
             <Button
-                Grid.Row="1"
+                Grid.Row="3"
                 Grid.Column="3"    
                 Text="Enter"
                 Style="{StaticResource pageButton}"
