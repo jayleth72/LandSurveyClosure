@@ -8,6 +8,7 @@ namespace LandSurveyClosure.Model
     public class ClosureLine
     {
       
+      
         public int ClosureLineId
         {
             get;
@@ -20,7 +21,19 @@ namespace LandSurveyClosure.Model
             set;
         }
 
-        public Bearing TheBearing
+        public int Degrees
+        {
+            get;
+            set;
+        }
+
+        public int Minutes
+        {
+            get;
+            set;
+        }
+
+        public int Seconds
         {
             get;
             set;

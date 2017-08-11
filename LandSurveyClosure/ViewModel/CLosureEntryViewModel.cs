@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using LandSurveyClosure.Model;
 using Xamarin.Forms;
 
 namespace LandSurveyClosure.ViewModel
@@ -12,6 +14,7 @@ namespace LandSurveyClosure.ViewModel
         private int _minuteInput;
         private int _secondInput;
         private double _distanceInput;
+        private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();
         #endregion
 
 
@@ -48,6 +51,21 @@ namespace LandSurveyClosure.ViewModel
             get { return _secondInput; }
             set { SetValue(ref _secondInput, value); }
         }
+
+		
+		public ObservableCollection<ClosureLine> DataList
+		{
+			get
+			{
+				return _dataList;
+			}
+			set
+			{
+				_dataList = value;
+				
+				OnPropertyChanged("DataList");
+			}
+		}
         #endregion
 
 
@@ -70,7 +88,16 @@ namespace LandSurveyClosure.ViewModel
         /// </summary>
         private void AddDistanceBearingToStack()
         {
-			// Add Closure Lines to list
+            // Add Closure Lines to list
+            var closureLine = new ClosureLine
+            {
+                Distance = _distanceInput,
+                Degrees = _degreesInput,
+                Minutes = _minuteInput,
+                Seconds = _secondInput
+            };
+
+            _dataList.Add(closureLine);
         }
         #endregion
     }
