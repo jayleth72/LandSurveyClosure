@@ -151,7 +151,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                   <TextCell
-                        Text="{Binding Distance}"
+                        Text="{Binding DistanceBearing}"
                         TextColor="Black">
                         <TextCell.ContextActions>
                             <MenuItem

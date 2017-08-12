@@ -38,5 +38,11 @@ namespace LandSurveyClosure.Model
             get;
             set;
         }
+
+        public string DistanceBearing
+        {
+            get;
+            set;
+        }
     }
 }
