@@ -137,67 +137,73 @@ namespace LandSurveyClosure.ViewModel
                 errorTypeFlag = INPUT_VALIDATION_FLAG.NO_DISTANCE_INPUT_ENTERED;
                 dataOk = false;
             }
-			else if (NonNumericalDoubleDataEntered(_distanceInput, ref _distanceDoubleInput))
-			{
-				// String Data/Non-Numerical data entered.
-				// Distance input is tested here and _distanceDoubleInput is initialised if correct double input.
-				errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
-				dataOk = false;
-			}
+            else if (NonNumericalDoubleDataEntered(_distanceInput, ref _distanceDoubleInput))
+            {
+                // String Data/Non-Numerical data entered.
+                // Distance input is tested here and _distanceDoubleInput is initialised if correct double input.
+                errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+                dataOk = false;
+            }
             else if (NoDataEnteredAngle(_degreesInput, _minuteInput, _secondInput))
-			{
-				// No Bearing Data entered
-				errorTypeFlag = INPUT_VALIDATION_FLAG.NO_BEARING_DATA_ENTERED;
-				dataOk = false;
-			}
-            else if (!NoDataEntered(_degreesInput))
-			{
-                if(NonNumericalDataEntered(_degreesInput, ref _degreeIntInput))
-                {
-					// Incorrect data entered in Degrees field.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
-					dataOk = false;
-                }   
-                else if (NumberOutOfRange(360, 0, _degreeIntInput))
-                {
-					// Degrees out of range error.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_DEGREES;
-					dataOk = false;
-                }    
-				
-			}
-			else if (!NoDataEntered(_minuteInput))
-			{
-				if (NonNumericalDataEntered(_minuteInput, ref _minuteIntInput))
-				{
-					// Incorrect data entered in Minutes field.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
-					dataOk = false;
-				}
-				else if (NumberOutOfRange(60, 0, _minuteIntInput))
-				{
-					// Degrees out of range error.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_MINUTES;
-					dataOk = false;
-				}
+            {
+                // No Bearing Data entered
+                errorTypeFlag = INPUT_VALIDATION_FLAG.NO_BEARING_DATA_ENTERED;
+                dataOk = false;
+            }
+            else
+            {
 
-			}
-			else if (!NoDataEntered(_secondInput))
-			{
-				if (NonNumericalDataEntered(_secondInput, ref _secondIntInput))
-				{
-					// Incorrect data entered in Secondss field.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
-					dataOk = false;
-				}
-				else if (NumberOutOfRange(60, 0, _secondIntInput))
-				{
-					// Degrees out of range error.
-					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_SECONDS;
-					dataOk = false;
-				}
+                if (!NoDataEntered(_degreesInput))
+                {
+                    if (NonNumericalDataEntered(_degreesInput, ref _degreeIntInput))
+                    {
+                        // Incorrect data entered in Degrees field.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+                        dataOk = false;
+                    }
+                    else if (NumberOutOfRange(360, 0, _degreeIntInput))
+                    {
+                        // Degrees out of range error.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_DEGREES;
+                        dataOk = false;
+                    }
 
-			}
+                }
+
+                if (!NoDataEntered(_minuteInput))
+                {
+                    if (NonNumericalDataEntered(_minuteInput, ref _minuteIntInput))
+                    {
+                        // Incorrect data entered in Minutes field.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+                        dataOk = false;
+                    }
+                    else if (NumberOutOfRange(60, 0, _minuteIntInput))
+                    {
+                        // Degrees out of range error.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_MINUTES;
+                        dataOk = false;
+                    }
+
+                }
+
+                if (!NoDataEntered(_secondInput))
+                {
+                    if (NonNumericalDataEntered(_secondInput, ref _secondIntInput))
+                    {
+                        // Incorrect data entered in Secondss field.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+                        dataOk = false;
+                    }
+                    else if (NumberOutOfRange(60, 0, _secondIntInput))
+                    {
+                        // Degrees out of range error.
+                        errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_SECONDS;
+                        dataOk = false;
+                    }
+
+                }
+            }
 
             // Display error message if data input error found
             if (!dataOk)
