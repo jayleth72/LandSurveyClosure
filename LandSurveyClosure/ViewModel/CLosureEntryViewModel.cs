@@ -9,12 +9,16 @@ namespace LandSurveyClosure.ViewModel
     public class CLosureEntryViewModel : BaseViewModel
     {
         #region Private Variables        
-        private int _selectedUnitIndex;     // Selected Index for the Unit Picker, default will be metres
-        private int _degreesInput;
-        private int _minuteInput;
-        private int _secondInput;
-        private double _distanceInput;
-        private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();
+        private int _selectedUnitIndex;         // Selected Index for the Unit Picker, default will be metres.
+        private string _degreesInput;
+        private string _minuteInput;
+        private string _secondInput;
+        private string _distanceInput;
+        private double _distanceDoubleInput;    // Distance input converted to a double.  This is tested in the IsDataInputOk() method.
+        private int _degreeIntInput;            // Degree input converted to a int.  This is tested in the IsDataInputOk() method.
+        private int _minuteIntInput;            // Minute input converted to a int.  This is tested in the IsDataInputOk() method.
+        private int _secondIntInput;            // Second input converted to a int.  This is tested in the IsDataInputOk() method
+		private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();
         #endregion
 
 
@@ -28,25 +32,25 @@ namespace LandSurveyClosure.ViewModel
             set { SetValue(ref _selectedUnitIndex, value); }
         }
 
-        public double DistanceInput
+        public string DistanceInput
         {
             get { return _distanceInput; }
             set { SetValue(ref _distanceInput, value); }
         }
 
-        public int DegreesInput
+        public string DegreesInput
         {
             get { return _degreesInput; }
             set { SetValue(ref _degreesInput, value); }
         }
 
-        public int MinuteInput
+        public string MinutesInput
         {
             get { return _minuteInput; }
             set { SetValue(ref _minuteInput, value); }
         }
 
-        public int SecondsInput
+        public string SecondsInput
         {
             get { return _secondInput; }
             set { SetValue(ref _secondInput, value); }
@@ -88,17 +92,168 @@ namespace LandSurveyClosure.ViewModel
         /// </summary>
         private void AddDistanceBearingToStack()
         {
-            // Add Closure Lines to list
-            var closureLine = new ClosureLine
+            // Check that Data is present and in correct format, otherwise show error type message
+            if (IsDataInputOk())
             {
-                Distance = _distanceInput,
-                Degrees = _degreesInput,
-                Minutes = _minuteInput,
-                Seconds = _secondInput
-            };
+				// Add Closure Lines to list
+				var closureLine = new ClosureLine
+				{
+					Distance = _distanceDoubleInput,
+					Degrees = _degreeIntInput,
+					Minutes = _minuteIntInput,
+					Seconds = _secondIntInput
+				};
 
-            _dataList.Add(closureLine);
+				_dataList.Add(closureLine);
+            }    
+           
         }
+
+
+		/// <summary>
+		/// Is the data input ok.
+		/// Need to check for no data entered in all fields.
+		/// Need to check for data entry in distance field.
+		/// Need to check for data entry in at least one of bearing fields.
+		/// Check format is correct - numerical format and in specified ranges for bearing data
+		/// </summary>
+		/// <returns><c>true</c>, if data input ok was ised, <c>false</c> otherwise.</returns>
+		private bool IsDataInputOk()
+        {
+            INPUT_VALIDATION_FLAG errorTypeFlag = INPUT_VALIDATION_FLAG.INPUT_OK;
+            bool dataOk = true;
+
+            if (NoDataEntered(_distanceInput) && NoDataEnteredAngle(_degreesInput, _minuteInput, _secondInput))
+            {
+                // No Data entered in both distance and bearing fields
+                errorTypeFlag = INPUT_VALIDATION_FLAG.NO_INPUT_ENTERED;
+                dataOk = false;
+            }
+            else if (NoDataEntered(_distanceInput))
+            {
+                // No Data entered in distance field
+                errorTypeFlag = INPUT_VALIDATION_FLAG.NO_DISTANCE_INPUT_ENTERED;
+                dataOk = false;
+            }
+			else if (NonNumericalDoubleDataEntered(_distanceInput, ref _distanceDoubleInput))
+			{
+				// String Data/Non-Numerical data entered.
+				// Distance input is tested here and _distanceDoubleInput is initialised if correct double input.
+				errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+				dataOk = false;
+			}
+            else if (NoDataEnteredAngle(_degreesInput, _minuteInput, _secondInput))
+			{
+				// No Bearing Data entered
+				errorTypeFlag = INPUT_VALIDATION_FLAG.NO_BEARING_DATA_ENTERED;
+				dataOk = false;
+			}
+            else if (!NoDataEntered(_degreesInput))
+			{
+                if(NonNumericalDataEntered(_degreesInput, ref _degreeIntInput))
+                {
+					// Incorrect data entered in Degrees field.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+					dataOk = false;
+                }   
+                else if (NumberOutOfRange(360, 0, _degreeIntInput))
+                {
+					// Degrees out of range error.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_DEGREES;
+					dataOk = false;
+                }    
+				
+			}
+			else if (!NoDataEntered(_minuteInput))
+			{
+				if (NonNumericalDataEntered(_minuteInput, ref _minuteIntInput))
+				{
+					// Incorrect data entered in Minutes field.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+					dataOk = false;
+				}
+				else if (NumberOutOfRange(60, 0, _minuteIntInput))
+				{
+					// Degrees out of range error.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_MINUTES;
+					dataOk = false;
+				}
+
+			}
+			else if (!NoDataEntered(_secondInput))
+			{
+				if (NonNumericalDataEntered(_secondInput, ref _secondIntInput))
+				{
+					// Incorrect data entered in Secondss field.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED;
+					dataOk = false;
+				}
+				else if (NumberOutOfRange(60, 0, _secondIntInput))
+				{
+					// Degrees out of range error.
+					errorTypeFlag = INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_SECONDS;
+					dataOk = false;
+				}
+
+			}
+
+            // Display error message if data input error found
+            if (!dataOk)
+                DisplayErrorMessage(errorTypeFlag);
+            
+            return dataOk;
+        }
+
+        /// <summary>
+        /// Displays the error message according to Error type.
+        /// </summary>
+        /// <param name="errorType">Error type.</param>
+        private async void DisplayErrorMessage(INPUT_VALIDATION_FLAG errorType)
+        {
+            switch (errorType)
+            {
+                case INPUT_VALIDATION_FLAG.NO_INPUT_ENTERED:
+                    await _pageService.DisplayAlert("No Data Entered", "Please enter some data", "Ok");
+                    break;
+				case INPUT_VALIDATION_FLAG.NO_DISTANCE_INPUT_ENTERED:
+					await _pageService.DisplayAlert("No Distance Data Entered", "Please enter some data in the Distance field", "Ok");
+					break;
+				case INPUT_VALIDATION_FLAG.NO_BEARING_DATA_ENTERED:
+					await _pageService.DisplayAlert("No Bearing Data Entered", "Please enter some data in the Degrees, Minutes or Seconds field", "Ok");
+					break;
+				case INPUT_VALIDATION_FLAG.NON_NUMERICAL_DATA_ENTERED:
+					await _pageService.DisplayAlert("Data Entry Error", "Non-numerical data entered, please enter numerical data only", "Ok");
+					break;
+				case INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_DEGREES:
+					await _pageService.DisplayAlert("Out of Range Error", "Please enter a value between 0 and 359 in the degrees field", "Ok");
+					break;
+				case INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_MINUTES:
+					await _pageService.DisplayAlert("Out of Range Error", "Please enter a value between 0 and 59 in the minutes field", "Ok");
+					break;
+				case INPUT_VALIDATION_FLAG.NUMBER_OUT_OF_RANGE_SECONDS:
+					await _pageService.DisplayAlert("Out of Range Error", "Please enter a value between 0 and 59 in the seconds field", "Ok");
+					break;
+                default:
+                    break;
+            }
+        }
+
+
+		/// <summary>
+		/// Check for no data entry on an angle.
+		/// Returns true if no data entered for degrees, minutes or seconds fields.
+		/// </summary>
+		/// <returns><c>true</c>, if no data entered for an angle, <c>false</c> otherwise.</returns>
+		/// <param name="input1">Input1.</param>
+		/// <param name="input2">Input2.</param>
+		/// <param name="input3">Input3.</param>
+		private bool NoDataEnteredAngle(string input1, string input2, string input3)
+		{
+			if (NoDataEntered(input1) && NoDataEntered(input2) && NoDataEntered(input3))
+				return true;
+			else
+				return false;
+		}
         #endregion
     }
      

@@ -12,13 +12,15 @@ namespace LandSurveyClosure.ViewModel
 
     public class BaseViewModel : INotifyPropertyChanged
     {
-        #region Protected Variables
+        #region Protected Class Variables
         protected readonly IPageService _pageService;                           // This is here to enable Page Navigation and DispalyAlert.
         protected int _conversionRounding;                                      // Rounding for conversion results stored in SQLite db.  This is changed via a picker via Settings/Roundings2Page.  
                                                                                 //protected SQLiteAsyncConnection _connection;
 
         protected enum INPUT_VALIDATION_FLAG                                    // Used to indicate error status of input.
         {
+            NO_DISTANCE_INPUT_ENTERED,
+            NO_BEARING_DATA_ENTERED,
             NO_INPUT_ENTERED,
             NON_NUMERICAL_DATA_ENTERED,
             NUMBER_OUT_OF_RANGE,
@@ -33,6 +35,7 @@ namespace LandSurveyClosure.ViewModel
             DEGREES,
             MINUTES,
             SECONDS
+         
         }
         #endregion
 
