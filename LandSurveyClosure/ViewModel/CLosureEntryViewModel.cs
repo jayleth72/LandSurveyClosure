@@ -44,7 +44,7 @@ namespace LandSurveyClosure.ViewModel
             set { SetValue(ref _degreesInput, value); }
         }
 
-        public string MinutesLInput
+        public string MinutesInput
         {
             get { return _minuteInput; }
             set { SetValue(ref _minuteInput, value); }
@@ -102,10 +102,11 @@ namespace LandSurveyClosure.ViewModel
                     Degrees = _degreeIntInput,
                     Minutes = _minuteIntInput,
                     Seconds = _secondIntInput,
-                    DistanceBearing = _distanceDoubleInput.ToString() + " " + _degreeIntInput + "\u00B0 " + _minuteIntInput.ToString() + "\' " + _secondIntInput.ToString() + "\""
+                    DistanceBearing = _distanceDoubleInput + " " + _degreeIntInput + "\u00B0 " + _minuteIntInput + "\' " + _secondIntInput + "\""
 				};
 
 				_dataList.Add(closureLine);
+                ClearInput();
             }    
            
         }
@@ -256,6 +257,23 @@ namespace LandSurveyClosure.ViewModel
 				return false;
 		}
 
+        private void ClearInput()
+        {
+            _distanceInput = "";
+            _degreesInput = "";
+            _minuteInput = "";
+            _secondInput = "";
+
+            _distanceDoubleInput = 0.0;
+            _degreeIntInput = 0;
+            _secondIntInput = 0;
+            _minuteIntInput = 0;
+
+            OnPropertyChanged(DistanceInput);
+            OnPropertyChanged(DegreesInput);
+			OnPropertyChanged(SecondsInput);
+			OnPropertyChanged(MinutesInput);
+        }
         #endregion
     }
      
