@@ -19,6 +19,7 @@ namespace LandSurveyClosure.ViewModel
         private int _minuteIntInput;            // Minute input converted to a int.  This is tested in the IsDataInputOk() method.
         private int _secondIntInput;            // Second input converted to a int.  This is tested in the IsDataInputOk() method
 		private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();
+
         #endregion
 
 
@@ -102,7 +103,7 @@ namespace LandSurveyClosure.ViewModel
                     Degrees = _degreeIntInput,
                     Minutes = _minuteIntInput,
                     Seconds = _secondIntInput,
-                    DistanceBearing = _distanceDoubleInput + " " + _degreeIntInput + "\u00B0 " + _minuteIntInput + "\' " + _secondIntInput + "\""
+                    DistanceBearing = ConvertDistanceBearingOutput()
 				};
 
 				_dataList.Add(closureLine);
@@ -111,6 +112,33 @@ namespace LandSurveyClosure.ViewModel
            
         }
 
+        /// <summary>
+        /// Takes Distance, Distance Unitsm, Degrees, Minutes and Seconds and converts to a string for display in output list.
+        /// </summary>
+        /// <returns>The distance bearing output.</returns>
+        private string ConvertDistanceBearingOutput()
+        {
+            string units;
+            // Get selected Unit from Unit Picker
+            switch (_selectedUnitIndex)
+            {
+                case 0:
+                    units = "metres";
+                    break;
+				case 1:
+					units = "links";
+					break;
+				case 2:
+					units = "feet";
+					break;
+                default:
+                    // make metres the default
+                    units = "metres";
+                    break;
+            }
+
+            return  _distanceDoubleInput + " " + units + ", " + _degreeIntInput + "\u00B0 " + _minuteIntInput + "\' " + _secondIntInput + "\"";
+        }
 
 		/// <summary>
 		/// Is the data input ok.
