@@ -76,6 +76,10 @@ namespace LandSurveyClosure.ViewModel
 
         #region View Commands for Buttons
         public ICommand AddDistanceBearingCommand { get; private set; }
+        public ICommand CalculateClosureCommand { get; private set; }
+        public ICommand ClearAllCommand { get; private set; }
+        public ICommand DrawCommand { get; private set; }
+
         #endregion
 
 
@@ -83,6 +87,9 @@ namespace LandSurveyClosure.ViewModel
         public CLosureEntryViewModel(IPageService pageService) : base(pageService)
         {
             AddDistanceBearingCommand = new Command(AddDistanceBearingToStack);
+            CalculateClosureCommand = new Command(CalculateClosure);
+			ClearAllCommand = new Command(ClearAll);
+			DrawCommand = new Command(Draw);
             _selectedUnitIndex = 0;     // Set default unit to metres
         }
         #endregion
@@ -111,6 +118,28 @@ namespace LandSurveyClosure.ViewModel
             }    
            
         }
+
+    
+        private void CalculateClosure()
+        {
+            
+        }
+
+        /// <summary>
+        /// Clear all input fields and list display
+        /// </summary>
+        private void ClearAll()
+        {
+            ClearInput();
+            _dataList.Clear();
+        }
+
+
+		private void Draw()
+		{
+
+		}
+
 
         /// <summary>
         /// Takes Distance, Distance Unitsm, Degrees, Minutes and Seconds and converts to a string for display in output list.

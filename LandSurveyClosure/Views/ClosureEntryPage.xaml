@@ -165,22 +165,25 @@
             </ListView.ItemTemplate>
         </ListView>
        
-        <Label
-            Text="Running Totals"
-            HorizontalOptions="Center"
-            TextColor="#fff"
-            VerticalTextAlignment="End"/>
+         <Button
+                Grid.Row="3"
+                Grid.Column="3"    
+                Text="Calculate Closure"
+                Style="{StaticResource pageButton}"
+                Command="{Binding CalculateClosureCommand}" />
         <StackLayout Orientation="Horizontal" Spacing="15">
-           <Label
-                x:Name="convertFromTotal"
-                Text="0"
-                Style="{StaticResource pageDisplayLabel}"
-                FontSize="20" />  
-           <Label
-                x:Name="convertToTotal"
-                Text="0"
-                Style="{StaticResource pageDisplayLabel}"
-                FontSize="20" /> 
+           <Button
+                Grid.Row="3"
+                Grid.Column="3"    
+                Text=" Draw " 
+                Style="{StaticResource pageButton}"
+                Command="{Binding DrawCommand}" />
+            <Button
+                Grid.Row="3"
+                Grid.Column="3"    
+                Text="Clear All"
+                Style="{StaticResource pageButton}"
+                Command="{Binding ClearAllCommand}" />
         </StackLayout>
        
          <Button
