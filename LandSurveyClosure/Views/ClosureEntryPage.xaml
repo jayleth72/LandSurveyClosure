@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behaviors="clr-namespace:LandSurveyClosure.Behaviors"
     x:Class="LandSurveyClosure.Views.ClosureEntryPage"
+    x:Name="ClosureLineView"
 	BackgroundColor="{StaticResource mainColorBackground}"
     NavigationPage.HasNavigationBar="false"
     NavigationPage.HasBackButton="false" >
@@ -155,10 +156,10 @@
                         TextColor="Black">
                         <TextCell.ContextActions>
                             <MenuItem
-                                Text="Delete"
-
-                                IsDestructive="true"
-                                CommandParameter="{Binding .}"/>
+                                Text="Delete Line"
+                                Command="{Binding Path=BindingContext.DeleteClosureLineCommand, Source={x:Reference ClosureLineView }}"
+                                CommandParameter="{Binding .}"
+                                IsDestructive="true"/>
                         </TextCell.ContextActions>
                     </TextCell>
                 </DataTemplate>

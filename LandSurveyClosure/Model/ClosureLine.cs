@@ -7,15 +7,27 @@ namespace LandSurveyClosure.Model
     /// </summary>
     public class ClosureLine
     {
-      
-      
+
+
         public int ClosureLineId
         {
             get;
             set;
         }
 
-        public double Distance
+        public int PointFrom
+        {
+            get;
+            set;
+        }
+
+		public int PointTo
+		{
+			get;
+			set;
+		}
+
+		public double Distance
         {
             get;
             set;

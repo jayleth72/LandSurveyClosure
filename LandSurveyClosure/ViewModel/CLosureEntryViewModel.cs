@@ -79,7 +79,7 @@ namespace LandSurveyClosure.ViewModel
         public ICommand CalculateClosureCommand { get; private set; }
         public ICommand ClearAllCommand { get; private set; }
         public ICommand DrawCommand { get; private set; }
-
+        public ICommand DeleteClosureLineCommand { get; private set; }
         #endregion
 
 
@@ -90,6 +90,7 @@ namespace LandSurveyClosure.ViewModel
             CalculateClosureCommand = new Command(CalculateClosure);
 			ClearAllCommand = new Command(ClearAll);
 			DrawCommand = new Command(Draw);
+            DeleteClosureLineCommand = new Command(DeleteLine);
             _selectedUnitIndex = 0;     // Set default unit to metres
         }
         #endregion
@@ -119,7 +120,12 @@ namespace LandSurveyClosure.ViewModel
            
         }
 
-    
+        private void DeleteLine(object sender)
+        {
+            var closureLine = sender as ClosureLine;
+            _dataList.Remove(closureLine);
+        }
+
         private void CalculateClosure()
         {
             
