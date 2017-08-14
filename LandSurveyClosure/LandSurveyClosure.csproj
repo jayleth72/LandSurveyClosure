@@ -67,6 +67,7 @@
     <Compile Include="Behaviors\NumberIntegerValidationBehavior.cs" />
     <Compile Include="Behaviors\TextFieldLengthRestrictorBehavior.cs" />
     <Compile Include="Model\ClosureLine.cs" />
+    <Compile Include="Model\Coordinate.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

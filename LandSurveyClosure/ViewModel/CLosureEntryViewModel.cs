@@ -18,8 +18,8 @@ namespace LandSurveyClosure.ViewModel
         private int _degreeIntInput;            // Degree input converted to a int.  This is tested in the IsDataInputOk() method.
         private int _minuteIntInput;            // Minute input converted to a int.  This is tested in the IsDataInputOk() method.
         private int _secondIntInput;            // Second input converted to a int.  This is tested in the IsDataInputOk() method
-		private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();
-
+		private ObservableCollection<ClosureLine> _dataList = new ObservableCollection<ClosureLine>();      // Stores Bearing and Distance Data input for display in view list
+        private ObservableCollection<Coordinate> _coordinatesList = new ObservableCollection<Coordinate>(); // Stores Northing and Eastings from  bearing and distance calculations 
         #endregion
 
 
@@ -92,12 +92,22 @@ namespace LandSurveyClosure.ViewModel
 			DrawCommand = new Command(Draw);
             DeleteClosureLineCommand = new Command(DeleteLine);
             _selectedUnitIndex = 0;     // Set default unit to metres
+
+            // Add starting coordinate (0, 0) to Coordinates list
+            var startingCoordinate = new Coordinate
+            {
+                Northing = 0.0,
+                Easting = 0.0
+            };
+
+            _coordinatesList.Add(startingCoordinate);
         }
         #endregion
 
         #region Class Methods
         /// <summary>
         /// Adds the distance bearing to stack for display in the list.
+        /// Converts Bearing and Distance to Northing and Easting and stores in a list
         /// </summary>
         private void AddDistanceBearingToStack()
         {
@@ -115,20 +125,46 @@ namespace LandSurveyClosure.ViewModel
 				};
 
 				_dataList.Add(closureLine);
+
+                AddCoordinateToList();
+
                 ClearInput();
             }    
            
         }
 
+
+        /// <summary>
+        /// Converts Bearing and Distance to Northing and Easting Coords.
+        /// Adds the Coordinate to _coordinatesList.
+        /// </summary>
+        private void AddCoordinateToList()
+        {
+			// Add Coordinate to list
+			var coordinate = new Coordinate
+			{
+				Northing = _distanceDoubleInput * System.Math.Cos(ConvertToRadians()),
+				Easting = _distanceDoubleInput * System.Math.Sin(ConvertToRadians())
+			};
+
+			_coordinatesList.Add(coordinate);
+        }
+
+
+        /// <summary>
+        /// Deletes the line from list when user swipes to right and presses "Delete Line" in the List.
+        /// </summary>
+        /// <param name="sender">Sender.</param>
         private void DeleteLine(object sender)
         {
             var closureLine = sender as ClosureLine;
             _dataList.Remove(closureLine);
         }
 
-        private void CalculateClosure()
+        private async void CalculateClosure()
         {
-            
+            string message = "Northing = " + _coordinatesList[1].Northing + ", Easting = " + _coordinatesList[1].Easting;
+            await _pageService.DisplayAlert("Calculations", message, "Ok");
         }
 
         /// <summary>
@@ -138,6 +174,7 @@ namespace LandSurveyClosure.ViewModel
         {
             ClearInput();
             _dataList.Clear();
+            _coordinatesList.Clear();
         }
 
 
@@ -343,7 +380,16 @@ namespace LandSurveyClosure.ViewModel
 			OnPropertyChanged(SecondsInput);
 			OnPropertyChanged(MinutesInput);
         }
-        #endregion
+
+        private double ConvertToRadians()
+        {
+            // Convert Input to decimal degrees
+            double decimalDegrees = (double)_degreeIntInput + ((double)_minuteIntInput / 60) + (_secondIntInput / 3600);
+
+            return decimalDegrees * (System.Math.PI / 180);
+        }
+
+       #endregion
     }
      
 
