@@ -83,7 +83,7 @@ namespace LandSurveyClosure.ViewModel
         #endregion
 
 
-        #region Constructors
+   
         public CLosureEntryViewModel(IPageService pageService) : base(pageService)
         {
             AddDistanceBearingCommand = new Command(AddDistanceBearingToStack);
@@ -102,7 +102,7 @@ namespace LandSurveyClosure.ViewModel
 
             _coordinatesList.Add(startingCoordinate);
         }
-        #endregion
+       
 
         #region Class Methods
         /// <summary>
@@ -163,12 +163,30 @@ namespace LandSurveyClosure.ViewModel
 
         private async void CalculateClosure()
         {
-            string message = "Northing = " + _coordinatesList[1].Northing + ", Easting = " + _coordinatesList[1].Easting;
-            await _pageService.DisplayAlert("Calculations", message, "Ok");
+			// check that at least 2 closure lines/coordinates exist before calculating closure
+			if (CheckOkToCalculateClosure())
+            {
+				string message = "Northing = " + _coordinatesList[1].Northing + ", Easting = " + _coordinatesList[1].Easting;
+				await _pageService.DisplayAlert("Calculations", message, "Ok");
+            }
+            else
+                await _pageService.DisplayAlert("Data Input Error", "Not Enough Data to Calculate Closure.", "Ok");
+        }
+
+		/// <summary>
+		/// // check that at least 2 closure lines/coordinates exist before calculating closure
+		/// </summary>
+		/// <returns><c>true</c>, if ok to calculate closure was checked, <c>false</c> otherwise.</returns>
+		private bool CheckOkToCalculateClosure()
+        {
+            if (_coordinatesList.Count > 2)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
-        /// Clear all input fields and list display
+        /// Clear all input fields and list display as well as coordinates list.
         /// </summary>
         private void ClearAll()
         {
