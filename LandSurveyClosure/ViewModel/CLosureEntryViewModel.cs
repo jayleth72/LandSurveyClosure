@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LandSurveyClosure.Model;
@@ -94,13 +95,7 @@ namespace LandSurveyClosure.ViewModel
             _selectedUnitIndex = 0;     // Set default unit to metres
 
             // Add starting coordinate (0, 0) to Coordinates list
-            var startingCoordinate = new Coordinate
-            {
-                Northing = 0.0,
-                Easting = 0.0
-            };
-
-            _coordinatesList.Add(startingCoordinate);
+            AddStartingCoordinate(0.0, 0.0);    
         }
        
 
@@ -133,6 +128,16 @@ namespace LandSurveyClosure.ViewModel
            
         }
 
+		private void AddStartingCoordinate(double northing, double easting)
+		{
+			var startingCoordinate = new Coordinate
+			{
+				Northing = northing,
+				Easting = easting
+			};
+
+			_coordinatesList.Add(startingCoordinate);
+		}
 
         /// <summary>
         /// Converts Bearing and Distance to Northing and Easting Coords.
@@ -140,41 +145,66 @@ namespace LandSurveyClosure.ViewModel
         /// </summary>
         private void AddCoordinateToList()
         {
+            // Check to see if Coordinate List is empty
+            if(_coordinatesList.Count == 0)
+            {
+                AddStartingCoordinate(0.0, 0.0);
+            }   
+
+            // Get Previous Northing and Easting and add new Northings and Eastings to get next Coordinates
+            Coordinate previous = _coordinatesList.Last();
+
 			// Add Coordinate to list
 			var coordinate = new Coordinate
 			{
-				Northing = _distanceDoubleInput * System.Math.Cos(ConvertToRadians()),
-				Easting = _distanceDoubleInput * System.Math.Sin(ConvertToRadians())
+				Northing = previous.Northing + _distanceDoubleInput * System.Math.Cos(ConvertToRadians()),
+				Easting = previous.Easting + _distanceDoubleInput * System.Math.Sin(ConvertToRadians())
 			};
 
 			_coordinatesList.Add(coordinate);
         }
 
+		private double ConvertToRadians()
+		{
+			// Convert Input to decimal degrees
+			double decimalDegrees = (double)_degreeIntInput + ((double)_minuteIntInput / 60) + (_secondIntInput / 3600);
 
-        /// <summary>
-        /// Deletes the line from list when user swipes to right and presses "Delete Line" in the List.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        private void DeleteLine(object sender)
+			return decimalDegrees * (System.Math.PI / 180);
+		}
+
+
+        private double RadianToDegree(double bearing)
         {
-            var closureLine = sender as ClosureLine;
-            _dataList.Remove(closureLine);
+            return bearing * (180 / System.Math.PI);    
         }
+
 
         private async void CalculateClosure()
         {
+            // Get Last Coordinate and calculate bearing and distance from starting coordinate (0,0)
+            Coordinate last = _coordinatesList.Last();
+            double closureBearing = System.Math.Tan(last.Easting / last.Northing);
+            double closureDistance = System.Math.Sqrt((last.Easting * last.Easting) + (last.Northing * last.Northing));
+
+            // Convert closureDistance to Degrees
+            closureBearing = RadianToDegree(closureBearing);
+
 			// check that at least 2 closure lines/coordinates exist before calculating closure
 			if (CheckOkToCalculateClosure())
             {
-				string message = "Northing = " + _coordinatesList[1].Northing + ", Easting = " + _coordinatesList[1].Easting;
+                // Check bearing and distance from 0, 0 to last point
+
+                string message = "Closure Distance= " + closureDistance + ", Bearing = " + closureBearing;
 				await _pageService.DisplayAlert("Calculations", message, "Ok");
+
             }
             else
                 await _pageService.DisplayAlert("Data Input Error", "Not Enough Data to Calculate Closure.", "Ok");
         }
 
+
 		/// <summary>
-		/// // check that at least 2 closure lines/coordinates exist before calculating closure
+		/// // check that at least 2 closure lines, or 3 coordinates exist before calculating closure
 		/// </summary>
 		/// <returns><c>true</c>, if ok to calculate closure was checked, <c>false</c> otherwise.</returns>
 		private bool CheckOkToCalculateClosure()
@@ -193,8 +223,18 @@ namespace LandSurveyClosure.ViewModel
             ClearInput();
             _dataList.Clear();
             _coordinatesList.Clear();
+
         }
 
+		/// <summary>
+		/// Deletes the line from list when user swipes to right and presses "Delete Line" in the List.
+		/// </summary>
+		/// <param name="sender">Sender.</param>
+		private void DeleteLine(object sender)
+		{
+			var closureLine = sender as ClosureLine;
+			_dataList.Remove(closureLine);
+		}
 
 		private void Draw()
 		{
@@ -397,14 +437,6 @@ namespace LandSurveyClosure.ViewModel
             OnPropertyChanged(DegreesInput);
 			OnPropertyChanged(SecondsInput);
 			OnPropertyChanged(MinutesInput);
-        }
-
-        private double ConvertToRadians()
-        {
-            // Convert Input to decimal degrees
-            double decimalDegrees = (double)_degreeIntInput + ((double)_minuteIntInput / 60) + (_secondIntInput / 3600);
-
-            return decimalDegrees * (System.Math.PI / 180);
         }
 
        #endregion
