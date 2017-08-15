@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LandSurveyClosure.Model;
+using System;
 using Xamarin.Forms;
 
 namespace LandSurveyClosure.ViewModel
@@ -148,8 +149,9 @@ namespace LandSurveyClosure.ViewModel
             // Check to see if Coordinate List is empty
             if(_coordinatesList.Count == 0)
             {
-                AddStartingCoordinate(0.0, 0.0);
-            }   
+				// Add starting coordinate (0, 0) to Coordinates list
+				AddStartingCoordinate(0.0, 0.0);
+			}   
 
             // Get Previous Northing and Easting and add new Northings and Eastings to get next Coordinates
             Coordinate previous = _coordinatesList.Last();
@@ -157,8 +159,8 @@ namespace LandSurveyClosure.ViewModel
 			// Add Coordinate to list
 			var coordinate = new Coordinate
 			{
-				Northing = previous.Northing + _distanceDoubleInput * System.Math.Cos(ConvertToRadians()),
-				Easting = previous.Easting + _distanceDoubleInput * System.Math.Sin(ConvertToRadians())
+                Northing = previous.Northing + _distanceDoubleInput * Math.Cos(ConvertToRadians()),
+                Easting = previous.Easting + _distanceDoubleInput * Math.Sin(ConvertToRadians())
 			};
 
 			_coordinatesList.Add(coordinate);
@@ -167,34 +169,60 @@ namespace LandSurveyClosure.ViewModel
 		private double ConvertToRadians()
 		{
 			// Convert Input to decimal degrees
-			double decimalDegrees = (double)_degreeIntInput + ((double)_minuteIntInput / 60) + (_secondIntInput / 3600);
+			double decimalDegrees = _degreeIntInput + (_minuteIntInput / 60) + (_secondIntInput / 3600);
 
-			return decimalDegrees * (System.Math.PI / 180);
+            return Math.PI * (decimalDegrees / 180.0);
 		}
-
 
         private double RadianToDegree(double bearing)
         {
             return bearing * (180 / System.Math.PI);    
         }
 
+		/// <summary>
+		/// Converts the decimal degrees to degrees, minutes and second.
+		/// </summary>
+		/// <returns>Degrees, minutes & seconds as a string.</returns>
+		/// <param name="input">Double User Input</param>
+		private string ConvertDecimalToDegMinSec(double input)
+		{
+			// Get the whole degrees value from the decimal value
+			int degrees = (int)input;
+
+			// Get the whole minutes value from the decimal value
+			double calcMinutesValue = ((input - (double)degrees) * 60);
+			int minutes = (int)calcMinutesValue;
+
+			// Calculate seconds
+			double theSeconds = ((calcMinutesValue - (double)minutes) * 60);
+			theSeconds = Math.Round(theSeconds, 1, MidpointRounding.AwayFromZero);
+			//Round Seconds to one decimal plae
+
+			return degrees.ToString() + "\u00B0 " + minutes.ToString() + "\' " + theSeconds.ToString() + "\"";
+		}
 
         private async void CalculateClosure()
         {
             // Get Last Coordinate and calculate bearing and distance from starting coordinate (0,0)
             Coordinate last = _coordinatesList.Last();
-            double closureBearing = System.Math.Tan(last.Easting / last.Northing);
-            double closureDistance = System.Math.Sqrt((last.Easting * last.Easting) + (last.Northing * last.Northing));
+            double closureBearing = Math.Atan(last.Easting/last.Northing);
+            double closureDistance = Math.Sqrt((double)((last.Easting * last.Easting) + (last.Northing * last.Northing)));
 
-            // Convert closureDistance to Degrees
+
+            // Convert closureBearing to Degrees
             closureBearing = RadianToDegree(closureBearing);
 
+            // Convert Decimal Degrees to Degrees Minutes and Seconds
+            string displayClosureBearing = ConvertDecimalToDegMinSec(closureBearing);
+                
 			// check that at least 2 closure lines/coordinates exist before calculating closure
 			if (CheckOkToCalculateClosure())
             {
-                // Check bearing and distance from 0, 0 to last point
+				// Check bearing and distance from 0, 0 to last point
 
-                string message = "Closure Distance= " + closureDistance + ", Bearing = " + closureBearing;
+				//string message = "Closure Distance= " + closureDistance + ", Bearing = " + displayClosureBearing;
+
+				string message = "Noprthing= " + last.Northing + ", Easting = " + last.Easting;
 				await _pageService.DisplayAlert("Calculations", message, "Ok");
 
             }
@@ -209,7 +237,7 @@ namespace LandSurveyClosure.ViewModel
 		/// <returns><c>true</c>, if ok to calculate closure was checked, <c>false</c> otherwise.</returns>
 		private bool CheckOkToCalculateClosure()
         {
-            if (_coordinatesList.Count > 2)
+            if (_coordinatesList.Count > 1)
                 return true;
             else
                 return false;
