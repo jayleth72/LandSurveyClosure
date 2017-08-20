@@ -91,7 +91,7 @@ namespace LandSurveyClosure.ViewModel
             AddDistanceBearingCommand = new Command(AddDistanceBearingToStack);
             CalculateClosureCommand = new Command(CalculateClosure);
 			ClearAllCommand = new Command(ClearAll);
-			DrawCommand = new Command(Draw);
+			DrawCommand = new Command(async () => await GoToDrawPage());
             DeleteClosureLineCommand = new Command(DeleteLine);
             _selectedUnitIndex = 0;     // Set default unit to metres
 
@@ -264,10 +264,10 @@ namespace LandSurveyClosure.ViewModel
 			_dataList.Remove(closureLine);
 		}
 
-		private void Draw()
-		{
-
-		}
+        private async Task GoToDrawPage()
+        {
+            await _pageService.PushAsync(new Views.DrawPage());
+        }
 
 
         /// <summary>
