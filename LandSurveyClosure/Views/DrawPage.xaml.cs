@@ -38,7 +38,7 @@ namespace LandSurveyClosure.Views
             polygonPath.MoveTo(0, 0);
             foreach(var coordinates in coordinateList)
             {
-                polygonPath.LineTo((float)coordinates.Easting, (float)coordinates.Northing);
+                polygonPath.LineTo((float)coordinates.Easting, (float)(coordinates.Northing * -1.0));
             } 
 
             //polygonPath.Close();
