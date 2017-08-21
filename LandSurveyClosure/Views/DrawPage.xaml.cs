@@ -5,6 +5,7 @@ using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using System.Collections.ObjectModel;
 using LandSurveyClosure.Model;
+using System.Linq;
 
 namespace LandSurveyClosure.Views
 {
@@ -25,6 +26,16 @@ namespace LandSurveyClosure.Views
             IsAntialias = true
         };
 
+        // Dotted Line to show closures
+        SKPaint blackDashedPaint = new SKPaint()
+        {
+            Style = SKPaintStyle.Stroke,
+            Color = SKColors.Black,
+            StrokeWidth = 1,
+            StrokeCap = SKStrokeCap.Round,
+            PathEffect = SKPathEffect.CreateDash(new[] { 10f, 10f }, 20f)
+        };
+         
         SKPath polygonPath = new SKPath();
 
         private ObservableCollection<Coordinate> _coordinateList;       // Holds coordinates used to draw polygon
@@ -38,7 +49,7 @@ namespace LandSurveyClosure.Views
             polygonPath.MoveTo(0, 0);
             foreach(var coordinates in coordinateList)
             {
-                polygonPath.LineTo((float)coordinates.Easting, (float)(coordinates.Northing * -1.0));
+                polygonPath.LineTo((float)coordinates.Easting, (float)(coordinates.Northing * -1));
             } 
 
             //polygonPath.Close();
@@ -63,7 +74,11 @@ namespace LandSurveyClosure.Views
             // Draw polygon path
             canvas.Save();
             canvas.DrawPath(polygonPath, blackStrokePaint);
-			canvas.Restore();
+
+            // draw dashed line from last point to origin (0, 0)
+            var lastCoordinate = _coordinateList.Last();
+            canvas.DrawLine((float)lastCoordinate.Easting, (float)((lastCoordinate.Northing * -1)), 0, 0, blackDashedPaint);
+            canvas.Restore();
         }
 
 
