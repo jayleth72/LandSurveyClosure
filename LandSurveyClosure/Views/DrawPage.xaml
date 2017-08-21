@@ -10,6 +10,7 @@
     </ContentPage.Padding>
 
     <Grid>
-        <views:SKCanvasView PaintSurface="OnPainting" EnableTouchEvents="True" Touch="OnTouch" />
+        <views:SKCanvasView x:Name="canvasView"
+                    PaintSurface="canvasView_PaintSurface" />
     </Grid>
 </ContentPage>

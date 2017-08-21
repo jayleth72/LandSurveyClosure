@@ -266,7 +266,7 @@ namespace LandSurveyClosure.ViewModel
 
         private async Task GoToDrawPage()
         {
-            await _pageService.PushAsync(new Views.DrawPage());
+            await _pageService.PushAsync(new Views.DrawPage(_coordinatesList));
         }
 
 
